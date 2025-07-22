@@ -3,8 +3,6 @@ import { Ship } from './ship.js'
 export class Gameboard {
     constructor(){
         this.grid = [];
-        createGrid();
-
         const ship1 = new Ship(5,'vertical', []);
         const ship2 = new Ship(5,'vertical', []);
         const ship3 = new Ship(5,'vertical', []);
