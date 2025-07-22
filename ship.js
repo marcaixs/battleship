@@ -1,9 +1,8 @@
 export class Ship {
-    constructor(length, direction, startingCell){
+    constructor(length, isHorizontal, cells){
         this.length = length;
-        this.direction = direction;
-        this.startingCell = startingCell;
-        this.cells = []
+        this.isHorizontal = isHorizontal;
+        this.cells = cells;
         this.hits = 0;
         this.sunk = false;
     }
@@ -13,7 +12,7 @@ export class Ship {
     }
     
     isSunk(){
-        if (this.length <= this.hits) this.sunk = true;
-        return this.sunk;
+        return this.length <= this.hits;
     }
+
 }
