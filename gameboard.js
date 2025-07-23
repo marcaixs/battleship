@@ -2,9 +2,10 @@ import { Ship } from './ship.js'
 import { Cell } from './cell.js';
 
 export class Gameboard {
-    constructor(player){
+    constructor(player, board){
         this.grid = []; // Array to hold all the cells (board)
         this.player =  player
+        this.board = board;
         //ship collection, player must place them and modify 'cells[]'
         const ship1 = new Ship(2,false, []);
         const ship2 = new Ship(3,false, []);
@@ -29,7 +30,7 @@ export class Gameboard {
     }
 
     //this is necessary to print the board on the screen
-    renderGameboard(board){
+    renderGameboard(){
          for(let i = 0; i<this.grid.length; i++){
             for(let j=0; j<this.grid.length; j++){
                 const cell = document.createElement('div');
@@ -40,7 +41,7 @@ export class Gameboard {
                 //cell.addEventListener('click', ()=>{
                //     this.recieveAttack(i, j);
                // })
-                board.appendChild(cell);
+                this.board.appendChild(cell);
                 this.ships.forEach((ship)=>{ //check all ships cells to paint ships brown
                    if (ship.cells.includes(i+"-"+j)){
                         document.getElementById(i+"-"+j).style.backgroundColor = "brown";
@@ -75,6 +76,7 @@ export class Gameboard {
 
     // This is necessary to allocate ships when the game starts
     placeShip(ship, x, y){
+        console.log('placeship');
        if(ship.isHorizontal){
         for(let i = 0; ship.length; i++){
              ship.cells.push(x+'-'+y+i);
@@ -84,6 +86,19 @@ export class Gameboard {
              ship.cells.push(x+i+'-'+y);
         } 
        }           
+    }
+
+    //initiate the placement of ships, adding event listeners
+    initiatePlacement(ship){
+        for(let i = 0; i<this.grid.length; i++){
+            for(let j=0; j<this.grid.length; j++){
+                const cell = document.getElementById(i+'-'+j)
+                 cell.addEventListener('click', ()=>{
+                    this.placeShip(ship, i, j)
+                })
+            }
+        } 
+
     }
     
     //add event listeners to the cells
