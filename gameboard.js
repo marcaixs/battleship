@@ -30,12 +30,20 @@ export class Gameboard {
          for(let i = 0; i<this.grid.length; i++){
             for(let j=0; j<this.grid.length; j++){
                 const cell = document.createElement('div');
+                
                 cell.classList.add('cell'+this.player.type);
-                cell.id = i+'-'+j;
+                cell.id = i+'-'+j;   
+
                 cell.addEventListener('click', ()=>{
                     this.recieveAttack(i, j);
                 })
                 board.appendChild(cell);
+                this.ships.forEach((ship)=>{ //check all ships cells to paint ships brown
+                   if (ship.cells.includes(i+"-"+j)){
+                        document.getElementById(i+"-"+j).style.backgroundColor = "brown";
+                    }         
+                        
+                })
             }
         }    
     }
@@ -63,12 +71,18 @@ export class Gameboard {
     }
 
     // This is necessary to allocate ships when the game starts
-    placeShip(ship){
-        
-        
-    }
-
-    
+    placeShip(ship, x, y){
+       if(ship.isHorizontal){
+        for(let i = 0; ship.length; i++){
+             ship.cells.push(x+'-'+y+i);
+        } 
+       } else {
+        for(let i = 0; ship.length; i++){
+             ship.cells.push(x+i+'-'+y);
+        } 
+       }
+               
+    }  
     
 }
 
