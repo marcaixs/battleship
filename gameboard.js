@@ -5,12 +5,15 @@ export class Gameboard {
     constructor(player){
         this.grid = []; // Array to hold all the cells (board)
         this.player =  player
-        // !!!!!------------- Ships hardcoded. This can be removed.
-        const ship1 = new Ship(3,false, ["1-1", "2-1", "3-1"]);
-        // const ship2 = new Ship(5,false, []);
-        // const ship3 = new Ship(5,false, []);
-        this.ships = [ship1];
-        // !!!!!------------- Ships hardcoded. This can be removed.
+        //ship collection, player must place them and modify 'cells[]'
+        const ship1 = new Ship(2,false, []);
+        const ship2 = new Ship(3,false, []);
+        const ship3 = new Ship(3,false, []);
+        const ship4 = new Ship(4,false, []);
+        const ship5 = new Ship(5,false, []);
+        //array of all ships
+        this.ships = [ship1, ship2, ship3, ship4, ship5];
+      
         
     }
 
@@ -25,7 +28,7 @@ export class Gameboard {
         }
     }
 
-    //this is necessary to print the board on the screen and add a event listener for each cell
+    //this is necessary to print the board on the screen
     renderGameboard(board){
          for(let i = 0; i<this.grid.length; i++){
             for(let j=0; j<this.grid.length; j++){
@@ -34,9 +37,9 @@ export class Gameboard {
                 cell.classList.add('cell'+this.player.type);
                 cell.id = i+'-'+j;   
 
-                cell.addEventListener('click', ()=>{
-                    this.recieveAttack(i, j);
-                })
+                //cell.addEventListener('click', ()=>{
+               //     this.recieveAttack(i, j);
+               // })
                 board.appendChild(cell);
                 this.ships.forEach((ship)=>{ //check all ships cells to paint ships brown
                    if (ship.cells.includes(i+"-"+j)){
@@ -80,9 +83,20 @@ export class Gameboard {
         for(let i = 0; ship.length; i++){
              ship.cells.push(x+i+'-'+y);
         } 
-       }
-               
-    }  
+       }           
+    }
+    
+    //add event listeners to the cells
+    initiateCells(){
+        for(let i = 0; i<this.grid.length; i++){
+            for(let j=0; j<this.grid.length; j++){
+                const cell = document.getElementById(i+'-'+j)
+                 cell.addEventListener('click', ()=>{
+                    this.recieveAttack(i, j);
+                })
+            }
+        }    
+    }
     
 }
 
