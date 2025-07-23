@@ -13,8 +13,8 @@ player.gameboard.renderGameboard(board1);
 computerPlayer.gameboard.renderGameboard(board2);
 
 
-// 3 - Enable click events to cells
+// 3 - Place ships
+const buttonVertical = document.getElementById('vertical')
+const buttonHorizontal = document.getElementById('horizontal')
 
-// 4 - Place ships
-
-// 5 - Handle turns
+// 4 - Handle turns
