@@ -82,7 +82,10 @@ export class Gameboard {
     placeShip(ships, x, y){
         console.log('placeship');
         const p = document.getElementById('paragrafShip');
-        const message = document.getElementById('message')
+        const message = document.getElementById('message');
+        const start = document.getElementById('start');
+        const buttonDirection = document.getElementById('direction');
+
         const ship = ships[this.currentShip];
 
         if(!ship){ //if there are no ships left, quit
@@ -143,10 +146,15 @@ export class Gameboard {
        this.renderGameboard();
        
        if (this.currentShip < ships.length) {
-        this.initiatePlacement(ships); // continuar con el siguiente
+            this.initiatePlacement(ships); // continue with next ship
+
         } else {
+            //if all ships al placed, hide direction button and show start game button
             console.log("All ships have been placed");
             message.innerText = 'All ships have been placed';
+            p.innerText = "Press start!"
+            start.style.visibility = 'visible';
+            buttonDirection.style.visibility = 'hidden';
         }
     }
 
@@ -167,7 +175,7 @@ export class Gameboard {
     changeShipDirection(){
         const buttonDirection = document.getElementById('direction')
        
-       buttonDirection.innerHTML = this.currentHoritzontal ? 'Horizontal' : 'Vertical';
+        buttonDirection.innerHTML = this.currentHoritzontal ? 'Horizontal' : 'Vertical';
 
         buttonDirection.addEventListener('click', ()=>{
             this.currentHoritzontal = !this.currentHoritzontal;

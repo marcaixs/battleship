@@ -16,3 +16,7 @@
     width: 50px;
     border: solid 1px black;
 }
+
+#start{
+    visibility: hidden;
+}
