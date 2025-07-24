@@ -41,9 +41,6 @@ export class Gameboard {
                 cell.classList.add('cell'+this.player.type);
                 cell.id = i + '-' + j;   
 
-                //cell.addEventListener('click', ()=>{
-               //     this.recieveAttack(i, j);
-               // })
                 this.board.appendChild(cell);
 
                 this.ships.forEach((ship)=>{ //check all ships cells to paint ships brown
@@ -58,24 +55,29 @@ export class Gameboard {
 
     //this is necessary to check if the player has hit a ship 
     recieveAttack(x, y){
-        if(!this.grid[x][y].played){
-            this.ships.map((ship, s)=>{
-                if(ship.cells.includes(x+"-"+y)) {
-                    ship.hit();
-                    console.log("The ship has been hit!");
-                    document.getElementById(x+"-"+y).style.backgroundColor = "red";
-                    if(ship.isSunk()){
-                        this.ships.splice(s, 1);
-                        console.log("The ship has been sunk!");
-                    }
-                } else {
-                    document.getElementById(x+"-"+y).style.backgroundColor = "blue";
-                }
-            })
-            this.grid[x][y].played = true;
-        }else{
+        if(this.grid[x][y].played){
             console.log("You already played this cell!");
+            return;
         }
+        
+        for(let i = 0; i<this.ships.length; i++){
+            const ship = this.ships[i]
+             if(ship.cells.includes(x+"-"+y)) {
+                ship.hit();
+                console.log("The ship has been hit!");
+                document.getElementById(x+"-"+y).style.backgroundColor = "red";
+
+                if(this.ships[i].isSunk()){
+                    this.ships.splice(i, 1);
+                    console.log("The ship has been sunk!");
+                }
+                return   
+            } 
+        }
+        this.grid[x][y].played = true;
+        document.getElementById(x+"-"+y).style.backgroundColor = "blue";
+        
+        
     }
 
     // This is necessary to allocate ships when the game starts
