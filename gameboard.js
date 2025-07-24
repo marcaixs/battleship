@@ -6,6 +6,7 @@ export class Gameboard {
         this.grid = []; // Array to hold all the cells (board)
         this.player =  player
         this.board = board;
+
         //ship collection, player must place them and modify 'cells[]'
         const ship1 = new Ship(2,false, []);
         const ship2 = new Ship(3,false, []);
@@ -15,6 +16,7 @@ export class Gameboard {
         //array of all ships
         this.ships = [ship1, ship2, ship3, ship4, ship5];
         this.currentShip = 0;  //current ship to be placed
+        this.currentHoritzontal = false; //current direction of the ship being placed
     }
 
     // This is necessary to fill up the board grid array.
@@ -89,6 +91,8 @@ export class Gameboard {
         p.innerText = 'Ship '+this.currentShip;
         console.log('Ship '+this.currentShip)
 
+        ship.isHorizontal = this.currentHoritzontal //place ship in the current direction
+
         if(!ship.isHorizontal){
             for(let i = 0; i<ship.length; i++){
                 ship.cells.push(x+'-'+(y+i));
@@ -113,8 +117,7 @@ export class Gameboard {
     }
 
     //initiate the placement of ships, adding event listeners
-    initiatePlacement(ships){
-        
+    initiatePlacement(ships){ 
         for(let i = 0; i<this.grid.length; i++){
             for(let j=0; j<this.grid.length; j++){
                 const cell = document.getElementById(i+'-'+j)
@@ -124,6 +127,19 @@ export class Gameboard {
                 })
             }
         } 
+    }
+
+    //change ship direction
+    changeShipDirection(){
+        const buttonDirection = document.getElementById('direction')
+       
+       buttonDirection.innerHTML = this.currentHoritzontal ? 'Horizontal' : 'Vertical';
+
+        buttonDirection.addEventListener('click', ()=>{
+            this.currentHoritzontal = !this.currentHoritzontal;
+            buttonDirection.innerHTML = this.currentHoritzontal ? 'Horizontal' : 'Vertical';
+            
+        })
     }
     
     //add event listeners to the cells
