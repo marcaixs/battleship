@@ -15,14 +15,11 @@ player.gameboard.renderGameboard();
 computerPlayer.gameboard.renderGameboard();
 
 
-// 3 - Place ships
-const buttonVertical = document.getElementById('vertical')
-const buttonHorizontal = document.getElementById('horizontal')
+// 3 - add function to change direction buttons
+player.gameboard.changeShipDirection(); 
 
 //call initiatePlacement for each ship on the array
-player.gameboard.ships.map((ship)=>{
-   
-})
+player.gameboard.initiatePlacement(player.gameboard.ships)
 
 
 // 4 - initiat cells to recive attacks 
