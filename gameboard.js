@@ -148,7 +148,7 @@ export class Gameboard {
        this.renderGameboard();
        
        if (this.currentShip < this.ships.length) {
-            this.initiatePlacement(ships); // continue with next ship
+            this.initiatePlacement(); // continue with next ship
 
         } else {
             //if all ships al placed, hide direction button and show start game button
