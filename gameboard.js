@@ -94,15 +94,23 @@ export class Gameboard {
         ship.isHorizontal = this.currentHoritzontal //place ship in the current direction
 
         if(!ship.isHorizontal){
+            if(y+ship.length>10){ //if ship coordenates are out of the board
+                p.innerText = 'Ship out of limits';
+                console.log('Ship out of limits')
+                return
+            }
             for(let i = 0; i<ship.length; i++){
                 ship.cells.push(x+'-'+(y+i));
                 
             } 
         } else {
+            if(x+ship.length>10){ //if ship coordenates are out of the board
+                p.innerText = 'Ship out of limits';
+                console.log('Ship out of limits')
+                return
+            }
             for(let i = 0; i<ship.length; i++){
-                ship.cells.push((x+i)+'-'+y);
-                
-                
+                ship.cells.push((x+i)+'-'+y);          
             } 
        }
        this.currentShip ++ 
