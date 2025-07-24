@@ -18,7 +18,7 @@ computerPlayer.gameboard.renderGameboard();
 player.gameboard.changeShipDirection(); 
 
 //call initiatePlacement for each ship on the array
-player.gameboard.initiatePlacement(player.gameboard.ships);
+player.gameboard.initiatePlacement();
 
 // 4 - initiate cells to recive attacks on start button click
 startButton.addEventListener('click', ()=>{

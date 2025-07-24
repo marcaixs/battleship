@@ -82,7 +82,7 @@ export class Gameboard {
 
     // This is necessary to allocate ships when the game starts
     placeShip(ships, x, y){
-        console.log('placeship');
+        
         const p = document.getElementById('paragrafShip');
         const message = document.getElementById('message');
         const start = document.getElementById('start');
@@ -161,17 +161,19 @@ export class Gameboard {
     }
 
     //initiate the placement of ships, adding event listeners
-    initiatePlacement(ships){ 
+    initiatePlacement(){ 
         for(let i = 0; i<this.grid.length; i++){
             for(let j=0; j<this.grid.length; j++){
                 const cell = document.getElementById(i+'-'+j)
                 cell.addEventListener('click', ()=>{
-                    this.placeShip(ships, i, j)
+                    this.placeShip(this.ships, i, j)
                     
                 })
             }
         } 
     }
+
+   
 
     //change ship direction
     changeShipDirection(){
