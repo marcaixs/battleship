@@ -81,14 +81,14 @@ export class Gameboard {
     }
 
     // This is necessary to allocate ships when the game starts
-    placeShip(ships, x, y){
+    placeShip( x, y){
         
         const p = document.getElementById('paragrafShip');
         const message = document.getElementById('message');
         const start = document.getElementById('start');
         const buttonDirection = document.getElementById('direction');
 
-        const ship = ships[this.currentShip];
+        const ship = this.ships[this.currentShip];
 
         if(!ship){ //if there are no ships left, quit
             return
@@ -166,14 +166,19 @@ export class Gameboard {
             for(let j=0; j<this.grid.length; j++){
                 const cell = document.getElementById(i+'-'+j)
                 cell.addEventListener('click', ()=>{
-                    this.placeShip(this.ships, i, j)
+                    this.placeShip(i, j)
                     
                 })
             }
         } 
     }
 
-   
+    //place random ships for computer
+    computerInitiatePlacement(){
+        for(let i = 0; i<this.ships.length; i++){
+            this.placeShip(i, j)
+        }
+    }
 
     //change ship direction
     changeShipDirection(){
