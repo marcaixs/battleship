@@ -14,8 +14,7 @@ export class Gameboard {
         const ship5 = new Ship(5,false, []);
         //array of all ships
         this.ships = [ship1, ship2, ship3, ship4, ship5];
-      
-        
+        this.currentShip = 0;  //current ship to be placed
     }
 
     // This is necessary to fill up the board grid array.
@@ -31,20 +30,23 @@ export class Gameboard {
 
     //this is necessary to print the board on the screen
     renderGameboard(){
+        this.board.innerHTML = ''; //delete board to render it again
+
          for(let i = 0; i<this.grid.length; i++){
             for(let j=0; j<this.grid.length; j++){
                 const cell = document.createElement('div');
                 
                 cell.classList.add('cell'+this.player.type);
-                cell.id = i+'-'+j;   
+                cell.id = i + '-' + j;   
 
                 //cell.addEventListener('click', ()=>{
                //     this.recieveAttack(i, j);
                // })
                 this.board.appendChild(cell);
+
                 this.ships.forEach((ship)=>{ //check all ships cells to paint ships brown
                    if (ship.cells.includes(i+"-"+j)){
-                        document.getElementById(i+"-"+j).style.backgroundColor = "brown";
+                        document.getElementById(i + '-' + j).style.backgroundColor = "brown";
                     }         
                         
                 })
@@ -75,30 +77,53 @@ export class Gameboard {
     }
 
     // This is necessary to allocate ships when the game starts
-    placeShip(ship, x, y){
+    placeShip(ships, x, y){
         console.log('placeship');
-       if(ship.isHorizontal){
-        for(let i = 0; ship.length; i++){
-             ship.cells.push(x+'-'+y+i);
-        } 
-       } else {
-        for(let i = 0; ship.length; i++){
-             ship.cells.push(x+i+'-'+y);
-        } 
-       }           
+        const p = document.getElementById('paragrafShip');
+        const ship = ships[this.currentShip];
+
+        if(!ship){
+            return
+        }
+       
+        p.innerText = 'Ship '+this.currentShip;
+        console.log('Ship '+this.currentShip)
+
+        if(!ship.isHorizontal){
+            for(let i = 0; i<ship.length; i++){
+                ship.cells.push(x+'-'+(y+i));
+                
+            } 
+        } else {
+            for(let i = 0; i<ship.length; i++){
+                ship.cells.push((x+i)+'-'+y);
+                
+                
+            } 
+       }
+       this.currentShip ++ 
+       this.renderGameboard();
+       
+       if (this.currentShip < ships.length) {
+        this.initiatePlacement(ships); // continuar con el siguiente
+        } else {
+            console.log("All ships have been placed");
+            p.innerText = 'All ships have been placed';
+        }
     }
 
     //initiate the placement of ships, adding event listeners
-    initiatePlacement(ship){
+    initiatePlacement(ships){
+        
         for(let i = 0; i<this.grid.length; i++){
             for(let j=0; j<this.grid.length; j++){
                 const cell = document.getElementById(i+'-'+j)
-                 cell.addEventListener('click', ()=>{
-                    this.placeShip(ship, i, j)
+                cell.addEventListener('click', ()=>{
+                    this.placeShip(ships, i, j)
+                    
                 })
             }
         } 
-
     }
     
     //add event listeners to the cells
