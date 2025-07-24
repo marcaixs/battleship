@@ -82,37 +82,63 @@ export class Gameboard {
     placeShip(ships, x, y){
         console.log('placeship');
         const p = document.getElementById('paragrafShip');
+        const message = document.getElementById('message')
         const ship = ships[this.currentShip];
 
-        if(!ship){
+        if(!ship){ //if there are no ships left, quit
             return
         }
        
-        p.innerText = 'Ship '+this.currentShip;
+        p.innerText = 'Ship '+(this.currentShip + 1);
         console.log('Ship '+this.currentShip)
 
         ship.isHorizontal = this.currentHoritzontal //place ship in the current direction
 
         if(!ship.isHorizontal){
-            if(y+ship.length>10){ //if ship coordenates are out of the board
-                p.innerText = 'Ship out of limits';
-                console.log('Ship out of limits')
-                return
+            //if ship coordenates are out of the board
+            if(y+ship.length>10){ 
+                message.innerText = 'Ship out of limits';
+                console.log('Ship out of limits');
+                return;
             }
+            //if ship coordenates conflicts with another ship
+            for (const otherShip of this.ships) {
+                for (let i = 0; i < otherShip.length; i++) {
+                    if (otherShip.cells.includes(x + '-' + (y + i))) {
+                        message.innerText = 'Cell already taken';
+                        console.log('Cell already taken');
+                        return; 
+                    }
+                }
+            }
+
             for(let i = 0; i<ship.length; i++){
                 ship.cells.push(x+'-'+(y+i));
-                
             } 
+
         } else {
-            if(x+ship.length>10){ //if ship coordenates are out of the board
-                p.innerText = 'Ship out of limits';
+            //if ship coordenates are out of the board
+            if(x+ship.length>10){ 
+                message.innerText = 'Ship out of limits';
                 console.log('Ship out of limits')
                 return
             }
+            //if ship coordenates conflicts with another ship
+            for (const otherShip of this.ships) {
+                for (let i = 0; i < otherShip.length; i++) {
+                    if (otherShip.cells.includes((x+i) + '-' + y)) {
+                        message.innerText = 'Cell already taken';
+                        console.log('Cell already taken');
+                        return; 
+                    }
+                }
+            }
+
             for(let i = 0; i<ship.length; i++){
                 ship.cells.push((x+i)+'-'+y);          
             } 
        }
+
        this.currentShip ++ 
        this.renderGameboard();
        
@@ -120,7 +146,7 @@ export class Gameboard {
         this.initiatePlacement(ships); // continuar con el siguiente
         } else {
             console.log("All ships have been placed");
-            p.innerText = 'All ships have been placed';
+            message.innerText = 'All ships have been placed';
         }
     }
 
