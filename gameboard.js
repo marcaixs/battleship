@@ -147,7 +147,7 @@ export class Gameboard {
        this.currentShip ++ 
        this.renderGameboard();
        
-       if (this.currentShip < ships.length) {
+       if (this.currentShip < this.ships.length) {
             this.initiatePlacement(ships); // continue with next ship
 
         } else {
