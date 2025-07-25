@@ -39,13 +39,13 @@ export class Gameboard {
                 const cell = document.createElement('div');
                 
                 cell.classList.add('cell'+this.player.type);
-                cell.id = i + '-' + j;   
+                cell.id = this.player.type+'-'+i + '-' + j;   
 
                 this.board.appendChild(cell);
 
                 this.ships.forEach((ship)=>{ //check all ships cells to paint ships brown
                    if (ship.cells.includes(i+"-"+j)){
-                        document.getElementById(i + '-' + j).style.backgroundColor = "brown";
+                        document.getElementById(this.player.type+'-'+i + '-' + j).style.backgroundColor = "brown";
                     }         
                         
                 })
@@ -64,18 +64,18 @@ export class Gameboard {
             const ship = this.ships[i]
              if(ship.cells.includes(x+"-"+y)) {
                 ship.hit();
-                console.log("The ship has been hit!");
-                document.getElementById(x+"-"+y).style.backgroundColor = "red";
+                console.log(this.player.type+" ship has been hit!");
+                document.getElementById(this.player.type+'-'+x + '-' + y).style.backgroundColor = "red";
 
                 if(this.ships[i].isSunk()){
                     this.ships.splice(i, 1);
-                    console.log("The ship has been sunk!");
+                    console.log(this.player.type + " ship has been sunk!");
                 }
                 return   
             } 
         }
         this.grid[x][y].played = true;
-        document.getElementById(x+"-"+y).style.backgroundColor = "blue";
+        document.getElementById(this.player.type+'-'+x + '-' + y).style.backgroundColor = "blue";
         
         
     }
@@ -164,7 +164,7 @@ export class Gameboard {
     initiatePlacement(){ 
         for(let i = 0; i<this.grid.length; i++){
             for(let j=0; j<this.grid.length; j++){
-                const cell = document.getElementById(i+'-'+j)
+                const cell = document.getElementById(this.player.type+'-'+i + '-' + j)
                 cell.addEventListener('click', ()=>{
                     this.placeShip(i, j)
                     
@@ -175,9 +175,46 @@ export class Gameboard {
 
     //place random ships for computer
     computerInitiatePlacement(){
-        for(let i = 0; i<this.ships.length; i++){
-            this.placeShip(i, j)
+        while (this.currentShip < this.ships.length) {
+            const x = Math.floor(Math.random() * 10);
+            const y = Math.floor(Math.random() * 10);
+            const isHorizontal = Math.random() < 0.5;
+            this.computerPlaceShip(x, y, isHorizontal);
         }
+        //delete to make computer ships invisible
+    }
+
+    //place the ships for the computer
+    computerPlaceShip(x, y, isHorizontal) {
+        const ship = this.ships[this.currentShip];
+
+        if (!ship) return;
+
+        ship.isHorizontal = isHorizontal;
+
+        if (!ship.isHorizontal) {
+            if (y + ship.length > 10) return;
+            for (const otherShip of this.ships) {
+                for (let i = 0; i < otherShip.length; i++) {
+                    if (otherShip.cells.includes(x + '-' + (y + i))) return;
+                }
+            }
+            for (let i = 0; i < ship.length; i++) {
+                ship.cells.push(x + '-' + (y + i));
+            }
+        } else {
+            if (x + ship.length > 10) return;
+            for (const otherShip of this.ships) {
+                for (let i = 0; i < otherShip.length; i++) {
+                    if (otherShip.cells.includes((x + i) + '-' + y)) return;
+                }
+            }
+            for (let i = 0; i < ship.length; i++) {
+                ship.cells.push((x + i) + '-' + y);
+            }
+        }
+
+        this.currentShip++;
     }
 
     //change ship direction
@@ -197,7 +234,7 @@ export class Gameboard {
     initiateCells(){
         for(let i = 0; i<this.grid.length; i++){
             for(let j=0; j<this.grid.length; j++){
-                const cell = document.getElementById(i+'-'+j)
+                const cell = document.getElementById(this.player.type+'-'+i + '-' + j)
                  cell.addEventListener('click', ()=>{
                     this.recieveAttack(i, j);
                 })
