@@ -53,32 +53,6 @@ export class Gameboard {
         }    
     }
 
-    //this is necessary to check if the player has hit a ship 
-    recieveAttack(x, y){
-        if(this.grid[x][y].played){
-            console.log("You already played this cell!");
-            return;
-        }
-        
-        for(let i = 0; i<this.ships.length; i++){
-            const ship = this.ships[i]
-             if(ship.cells.includes(x+"-"+y)) {
-                ship.hit();
-                console.log(this.player.type+" ship has been hit!");
-                document.getElementById(this.player.type+'-'+x + '-' + y).style.backgroundColor = "red";
-
-                if(this.ships[i].isSunk()){
-                    this.ships.splice(i, 1);
-                    console.log(this.player.type + " ship has been sunk!");
-                }
-                return   
-            } 
-        }
-        this.grid[x][y].played = true;
-        document.getElementById(this.player.type+'-'+x + '-' + y).style.backgroundColor = "blue";
-        
-        
-    }
 
     // This is necessary to allocate ships when the game starts
     placeShip( x, y){
@@ -240,6 +214,34 @@ export class Gameboard {
                 })
             }
         }    
+    }
+
+    
+    //this is necessary to check if the player has hit a ship 
+    recieveAttack(x, y){
+        if(this.grid[x][y].played){
+            console.log("You already played this cell!");
+            return;
+        }
+        
+        for(let i = 0; i<this.ships.length; i++){
+            const ship = this.ships[i]
+             if(ship.cells.includes(x+"-"+y)) {
+                ship.hit();
+                console.log(this.player.type+" ship has been hit!");
+                document.getElementById(this.player.type+'-'+x + '-' + y).style.backgroundColor = "red";
+
+                if(this.ships[i].isSunk()){
+                    this.ships.splice(i, 1);
+                    console.log(this.player.type + " ship has been sunk!");
+                }
+                return   
+            } 
+        }
+        this.grid[x][y].played = true;
+        document.getElementById(this.player.type+'-'+x + '-' + y).style.backgroundColor = "blue";
+        
+        
     }
     
 }
